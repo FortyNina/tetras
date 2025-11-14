@@ -8,6 +8,8 @@ namespace Tetras
     /// </summary>
     public class FlockManager : MonoBehaviour
     {
+        public static FlockManager Instance;
+
         [Header("References")]
         [SerializeField] private Boid _boidPrefab;
 
@@ -33,6 +35,12 @@ namespace Tetras
 
         private Vector3 _currentVelocity;
         private float _boidSmoothTime = .5f;
+
+        private void Awake()
+        {
+            if (Instance != null) Destroy(gameObject);
+            Instance = this;
+        }
 
 
         private void Start()
