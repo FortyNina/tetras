@@ -33,6 +33,8 @@ namespace Tetras
         private List<Boid> _boids = new List<Boid>();
         public int BoidCount => _boids.Count;
 
+        public float NeighborDistance => _neighborDistance;
+
         private Vector3 _currentVelocity;
         private float _boidSmoothTime = .5f;
 
@@ -59,7 +61,7 @@ namespace Tetras
             {
                 Boid boid = _boids[i];
 
-                List<Transform> boids = boid.GetNearbyColliders(_neighborDistance);
+                List<Transform> boids = boid.NearbyColliders;
 
                 Vector3 move = Steer(boid, boids);
 
@@ -75,6 +77,12 @@ namespace Tetras
         private Vector3 Steer(Boid boid, List<Transform> boids)
         {
             Vector3 steering = Vector3.zero;
+
+            //Check if this boid needs to avoid any obstacles
+            if(boid.NearbyObstacles.Count > 0)
+            {
+                return AvoidObstacles(boid, boid.NearbyObstacles);
+            }
 
             steering += Calculate(Align(boid, boids), _alignmentStrength);
             steering += Calculate(Cohesion(boid, boids), _cohesionStrength);
@@ -154,6 +162,22 @@ namespace Tetras
             float t = centerOffset.magnitude / _flockRadius;
             if (t < .9f) return Vector3.zero;
             return centerOffset * t * t;
+        }
+
+        private Vector3 AvoidObstacles(Boid boid, List<Transform> obstacles)
+        {
+            Vector3 steering = Vector3.zero;
+            Vector3 obstacleCenter = Vector3.zero;
+
+            for (int i = 0; i < obstacles.Count; i++) //get average pos of obstacles
+            {
+                obstacleCenter += obstacles[i].position;
+            }
+            obstacleCenter = obstacleCenter / obstacles.Count;
+
+            steering = boid.transform.position - obstacleCenter;
+            return new Vector3(steering.x, steering.y, 0);
+
         }
 
         #endregion

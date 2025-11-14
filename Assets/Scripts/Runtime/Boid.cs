@@ -7,6 +7,14 @@ namespace Tetras
     {
         [SerializeField] private Color[] _fishColors;
 
+        private List<Transform> _nearbyColliders = new List<Transform>();
+        public List<Transform> NearbyColliders => _nearbyColliders;
+
+        private float _nearestObstacleDistance;
+        public float NearestObstacleDistance => _nearestObstacleDistance;
+        private List<Transform> _nearbyObstacles = new List<Transform>();
+        public List<Transform> NearbyObstacles => _nearbyObstacles;
+
         private Collider _collider;
         private ParticleSystemRenderer _particleSystem;
         private Material _particleSystemMat;
@@ -23,12 +31,14 @@ namespace Tetras
 
         private void Update()
         {
+            UpdateNearbyColliders(FlockManager.Instance.NeighborDistance);
+            UpdateNearbyObstacles();
             SetColor();
         }
 
         private void SetColor()
         {
-            var neighborPercent = 1f / (GetNearbyColliders(2f).Count / 6f);
+            var neighborPercent = 1f / (NearbyColliders.Count / 6f);
             float index = neighborPercent * _fishColors.Length;
             int floorIndex = (int)index;
             int ceilingIndex = floorIndex + 1;
@@ -54,9 +64,9 @@ namespace Tetras
         }
 
         /// <summary>
-        /// Returns a list of colliders within range of this boid
+        /// Sets a list of colliders within range of this boid.
         /// </summary>
-        public List<Transform> GetNearbyColliders(float neighborDistance)
+        private void UpdateNearbyColliders(float neighborDistance)
         {
             List<Transform> objs = new List<Transform>();
 
@@ -65,9 +75,42 @@ namespace Tetras
             {
                 if (colliders[i] != _collider) objs.Add(colliders[i].transform);
             }
-            return objs;
+            _nearbyColliders = objs;
         }
 
-        
+        /// <summary>
+        /// Updates the list of obstacles within range. Obstacles are objects in the world tagged as obstacle
+        /// </summary>
+        /// <returns></returns>
+        private void UpdateNearbyObstacles()
+        {
+            Collider[] hitColliders = Physics.OverlapSphere(transform.position, 3);
+            List<Transform> obstacles = new List<Transform>();
+            foreach (var hitCollider in hitColliders)
+            {
+                if (hitCollider.tag.Equals("Obstacle"))
+                {
+                    obstacles.Add(hitCollider.transform);
+                }
+            }
+
+            if (obstacles.Count == 0) _nearestObstacleDistance = 0;
+            else
+            {
+                //find closest
+                float minDist = Mathf.Infinity;
+                for (int i = 0; i < obstacles.Count; i++)
+                {
+                    float dist = Vector3.Distance(transform.position, obstacles[i].position);
+                    if (dist < minDist) minDist = dist;
+                }
+                _nearestObstacleDistance = minDist;
+            }
+
+            _nearbyObstacles = obstacles;
+
+        }
+
+
     }
 }
