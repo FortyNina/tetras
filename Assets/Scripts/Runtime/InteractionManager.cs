@@ -1,36 +1,39 @@
 using UnityEngine;
 
-public class InteractionManager : MonoBehaviour
+namespace Tetras
 {
-    [SerializeField] private GameObject _touchObstaclePrefab;
-    private GameObject _touchObstacleRef;
-
-    void Update()
+    public class InteractionManager : MonoBehaviour
     {
-        if (Input.GetMouseButton(0))
+        [SerializeField] private GameObject _touchObstaclePrefab;
+        private GameObject _touchObstacleRef;
+
+        void Update()
         {
-            Vector3 mousePos = Input.mousePosition;
-            mousePos.z = 10f;
-
-            Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
-
-            if (_touchObstacleRef != null)
+            if (Input.GetMouseButton(0))
             {
-                _touchObstacleRef.SetActive(true);
-                _touchObstacleRef.transform.position = worldPos;
+                Vector3 mousePos = Input.mousePosition;
+                mousePos.z = 10f;
+
+                Vector3 worldPos = Camera.main.ScreenToWorldPoint(mousePos);
+
+                if (_touchObstacleRef != null)
+                {
+                    _touchObstacleRef.SetActive(true);
+                    _touchObstacleRef.transform.position = worldPos;
+                }
+                else
+                {
+                    GameObject go = Instantiate(_touchObstaclePrefab, worldPos, Quaternion.identity);
+                    _touchObstacleRef = go;
+                }
             }
-            else
-            {
-                GameObject go = Instantiate(_touchObstaclePrefab, worldPos, Quaternion.identity);
-                _touchObstacleRef = go;
-            }
-        }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            if(_touchObstacleRef != null)
+            if (Input.GetMouseButtonUp(0))
             {
-                _touchObstacleRef.SetActive(false);
+                if (_touchObstacleRef != null)
+                {
+                    _touchObstacleRef.SetActive(false);
+                }
             }
         }
     }
