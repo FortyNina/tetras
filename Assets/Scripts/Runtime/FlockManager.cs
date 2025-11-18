@@ -30,6 +30,12 @@ namespace Tetras
         [SerializeField] private float _edgesStrength = .5f;
         [SerializeField] private float _avoidanceStrength = 3f;
 
+        [Space(20)]
+        [Header("Environment Factors")]
+        [SerializeField] private float _normalSpeed = 6f;
+        [SerializeField] private float _coldSpeed = 0f;
+        [SerializeField] private float _warmSpeed = 15f;
+
         private List<Boid> _boids = new List<Boid>();
         public int BoidCount => _boids.Count;
 
@@ -52,6 +58,16 @@ namespace Tetras
                 Boid newBoid = Instantiate(_boidPrefab, Random.insideUnitSphere * 8f, Quaternion.Euler(Vector3.forward * Random.Range(0, 360f)), transform);
                 _boids.Add(newBoid);
             }
+        }
+
+        private void OnEnable()
+        {
+            EnvironmentManager.Instance.OnTemperatureUpdated += OnTemperatureUpdated;
+        }
+
+        private void OnDisable()
+        {
+            EnvironmentManager.Instance.OnTemperatureUpdated += OnTemperatureUpdated;
         }
 
 
@@ -178,6 +194,17 @@ namespace Tetras
             steering = boid.transform.position - obstacleCenter;
             return new Vector3(steering.x, steering.y, 0);
 
+        }
+
+        #endregion
+
+        #region Environmental Factors
+
+        private void OnTemperatureUpdated()
+        {
+            var temp = EnvironmentManager.Instance.Temperature;
+            var percent = (float)(temp - EnvironmentManager.Instance.ColdTemperature) / (float)(EnvironmentManager.Instance.WarmTemperature - EnvironmentManager.Instance.ColdTemperature);
+             _maxSpeed = Mathf.Lerp(_coldSpeed, _warmSpeed , percent);
         }
 
         #endregion
