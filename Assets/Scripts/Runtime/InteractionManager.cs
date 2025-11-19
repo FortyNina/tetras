@@ -77,6 +77,7 @@ namespace Tetras
                     {
                         _leavesPool.Return(leaves);
                     };
+                    EnvironmentManager.Instance.UpdatePH(EnvironmentManager.Instance.PH - .5f);
                 }
 
                 if (_currentInteractionMode == InteractionType.DroppingBakingSoda)
@@ -87,6 +88,7 @@ namespace Tetras
                     {
                         _bakingSodaPool.Return(bakingSoda);
                     };
+                    EnvironmentManager.Instance.UpdatePH(EnvironmentManager.Instance.PH + .5f);
                 }
             }
         }

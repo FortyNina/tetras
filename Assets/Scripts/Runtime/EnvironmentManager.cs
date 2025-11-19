@@ -26,9 +26,16 @@ namespace Tetras
         [Space(20), Header("pH")]
         [SerializeField] private float _pH = 7.0f;
         public float PH => _pH;
-
+        [SerializeField] private float _normalPH = 7.0f;
+        public float NormalPH => _normalPH;
+        [SerializeField] private float _highPH = 10f;
+        public float HighPH => _highPH;
+        [SerializeField] private float _lowPH = 4f;
+        public float LowPH => _lowPH;
+        [SerializeField] private Color _algaeTankColor;
 
         private Bloom _bloom;
+        private Vignette _vignette;
 
         public System.Action OnPHUpdated;
         public System.Action OnTemperatureUpdated;
@@ -39,11 +46,19 @@ namespace Tetras
             Instance = this;
 
             _volume.profile.TryGet(out _bloom);
+            _volume.profile.TryGet(out _vignette);
         }
 
         public void UpdatePH(float newValue)
         {
-            _pH = newValue;
+            _pH = Mathf.Clamp(newValue, _lowPH, _highPH);
+
+            if(_pH > _normalPH)
+            {
+                float percent = (_pH - _normalPH) / (_highPH - _normalPH);
+                var color = Color.Lerp(Color.white, _algaeTankColor, Mathf.Abs(percent));
+                _vignette.color.Override(color);
+            }
             OnPHUpdated?.Invoke();
         }
 

@@ -74,6 +74,8 @@ namespace Tetras
                 _leavesLabel.SetActive(true);
                 InteractionManager.Instance.BeginLeavesInteraction();
             }
+            _bakingSodaLabel.SetActive(false);
+
         }
 
         private void BakingSodaButtonClicked()
@@ -90,6 +92,8 @@ namespace Tetras
                 InteractionManager.Instance.BeginBakingSodaInteraction();
 
             }
+            _leavesLabel.SetActive(false);
+
         }
     }
 }

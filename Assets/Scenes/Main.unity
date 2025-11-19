@@ -6064,6 +6064,10 @@ MonoBehaviour:
   _coldTemperature: 45
   _warmTemperature: 100
   _pH: 7
+  _normalPH: 7
+  _highPH: 10
+  _lowPH: 4
+  _algaeTankColor: {r: 0.44705883, g: 1, b: 0.5019608, a: 1}
 --- !u!4 &1322919722
 Transform:
   m_ObjectHideFlags: 0
