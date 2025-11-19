@@ -35,6 +35,10 @@ namespace Tetras
         [SerializeField] private float _normalSpeed = 6f;
         [SerializeField] private float _coldSpeed = 0f;
         [SerializeField] private float _warmSpeed = 15f;
+        [SerializeField] private float _normalFishDistance = .5f;
+        [SerializeField] private float _highPHFishDistance = 1f;
+        [SerializeField] private float _normalNeighborDistance = 2f;
+        [SerializeField] private float _highNeighborDistance = 10f;
 
         private List<Boid> _boids = new List<Boid>();
         public int BoidCount => _boids.Count;
@@ -63,11 +67,13 @@ namespace Tetras
         private void OnEnable()
         {
             EnvironmentManager.Instance.OnTemperatureUpdated += OnTemperatureUpdated;
+            EnvironmentManager.Instance.OnPHUpdated += OnPHUpdated;
         }
 
         private void OnDisable()
         {
             EnvironmentManager.Instance.OnTemperatureUpdated += OnTemperatureUpdated;
+            EnvironmentManager.Instance.OnPHUpdated -= OnPHUpdated;
         }
 
 
@@ -205,6 +211,21 @@ namespace Tetras
             var temp = EnvironmentManager.Instance.Temperature;
             var percent = (float)(temp - EnvironmentManager.Instance.ColdTemperature) / (float)(EnvironmentManager.Instance.WarmTemperature - EnvironmentManager.Instance.ColdTemperature);
              _maxSpeed = Mathf.Lerp(_coldSpeed, _warmSpeed , percent);
+        }
+
+        private void OnPHUpdated()
+        {
+            var ph = EnvironmentManager.Instance.PH;
+            if (ph > EnvironmentManager.Instance.NormalPH)
+            {
+                float percent = (ph - EnvironmentManager.Instance.NormalPH) / (EnvironmentManager.Instance.HighPH - EnvironmentManager.Instance.NormalPH);
+                _avoidanceRadiusFactor = Mathf.Lerp(_normalFishDistance, _highPHFishDistance, percent);
+            }
+            else
+            {
+                float percent = (ph - EnvironmentManager.Instance.LowPH) / (EnvironmentManager.Instance.NormalPH - EnvironmentManager.Instance.LowPH);
+                _neighborDistance = Mathf.Lerp(_normalNeighborDistance, _highNeighborDistance, 1 - percent);
+            }
         }
 
         #endregion
