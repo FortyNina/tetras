@@ -776,8 +776,8 @@ ParticleSystem:
     radiusThickness: 1
     donutRadius: 0.2
     m_Position: {x: 0, y: 0, z: 0}
-    m_Rotation: {x: 0, y: 0, z: 0}
-    m_Scale: {x: 0.005, y: 0.005, z: 0.005}
+    m_Rotation: {x: 90, y: -90, z: 90}
+    m_Scale: {x: 4, y: 4, z: 4}
     placementMode: 2
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -837,7 +837,7 @@ ParticleSystem:
           m_PreInfinity: 2
           m_PostInfinity: 2
           m_RotationOrder: 4
-    m_Mesh: {fileID: -1485616040554582263, guid: 6850f0cd0b34d49b9bb7fbcd54ac0a00, type: 3}
+    m_Mesh: {fileID: -1258736543099589447, guid: bce9297cfc6f941e39b1a64c82eab41f, type: 3}
     m_MeshRenderer: {fileID: 0}
     m_SkinnedMeshRenderer: {fileID: 0}
     m_Sprite: {fileID: 0}
