@@ -1,5 +1,18 @@
 # tetras
-A small sim/visualizer of flocking tetras. Built in Unity.
+A small interactive sim/visualizer of flocking tetras. 
+
+<img src="Media/tetrasGif_01.gif" width="400">
+
+
+### Built With
+- Unity 6000.0.58f2
+- C#
+- URP
+
+### How to run
+- Open project in Unity 6000.0.58f2 or later
+- Press play from `Main` scene
+- Use UI buttons in top left to adjust pH or temperature to modify flocking behaviors
 
 
 ### Resources
