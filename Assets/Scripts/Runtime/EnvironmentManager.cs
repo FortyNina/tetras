@@ -4,6 +4,9 @@ using UnityEngine.Rendering.Universal;
 
 namespace Tetras
 {
+    /// <summary>
+    /// Controls environmental settings and visuals in the world such as temperature and pH
+    /// </summary>
     public class EnvironmentManager : MonoBehaviour
     {
         public static EnvironmentManager Instance;

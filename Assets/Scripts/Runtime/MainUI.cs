@@ -4,6 +4,9 @@ using UnityEngine.UI;
 
 namespace Tetras
 {
+    /// <summary>
+    /// Handles all UI in the sim
+    /// </summary>
     public class MainUI : MonoBehaviour
     {
         [SerializeField] private TextMeshProUGUI _phText;
@@ -53,7 +56,19 @@ namespace Tetras
 
         private void TemperatureButtonClicked()
         {
-            _temperatureSlider.gameObject.SetActive(!_temperatureSlider.gameObject.activeInHierarchy);
+            if (_temperatureSlider.gameObject.activeInHierarchy)
+            {
+                InteractionManager.Instance.EndInteraction();
+                _temperatureSlider.gameObject.SetActive(false);
+
+            }
+            else
+            {
+                InteractionManager.Instance.BeginTemperatureInteraction();
+                _temperatureSlider.gameObject.SetActive(true);
+            }
+            _bakingSodaLabel.SetActive(false);
+            _leavesLabel.SetActive(false);
         }
 
         private void TemperatureSliderUpdated(float value)
@@ -75,6 +90,7 @@ namespace Tetras
                 InteractionManager.Instance.BeginLeavesInteraction();
             }
             _bakingSodaLabel.SetActive(false);
+            _temperatureSlider.gameObject.SetActive(false);
 
         }
 
@@ -93,6 +109,7 @@ namespace Tetras
 
             }
             _leavesLabel.SetActive(false);
+            _temperatureSlider.gameObject.SetActive(false);
 
         }
     }

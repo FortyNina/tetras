@@ -2,13 +2,17 @@ using UnityEngine;
 
 namespace Tetras
 {
+    /// <summary>
+    /// Handles any user input in the sim
+    /// </summary>
     public class InteractionManager : MonoBehaviour
     {
         private enum InteractionType
         {
             None,
             DroppingLeaves,
-            DroppingBakingSoda
+            DroppingBakingSoda,
+            AdjustingTemperature
         }
 
         public static InteractionManager Instance;
@@ -91,6 +95,11 @@ namespace Tetras
                     EnvironmentManager.Instance.UpdatePH(EnvironmentManager.Instance.PH + .25f);
                 }
             }
+        }
+
+        public void BeginTemperatureInteraction()
+        {
+            _currentInteractionMode = InteractionType.AdjustingTemperature;
         }
 
         public void BeginLeavesInteraction()
