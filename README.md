@@ -19,6 +19,8 @@ A small interactive sim/visualizer of flocking tetras. Uses flocking algorithm c
   <img src="https://github.com/user-attachments/assets/79919a5c-ea99-4ac4-8c3d-cdff93612322" width="300"/>
   <img src="https://github.com/user-attachments/assets/0d907a7c-d15c-4ff2-a9d0-3a7e073586b1" width="300"/>
   <img src="https://github.com/user-attachments/assets/c8919463-1841-47c0-ae73-30a8210cb116" width="300"/>
+  <img src="https://github.com/user-attachments/assets/50d77bf3-9b62-4923-8ba5-edb4c3494276" width="300"/>
+
 
 </p>
 
